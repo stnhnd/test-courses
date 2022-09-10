@@ -5,11 +5,11 @@
         <h2 class="text-3xl font-bold tracking-tight text-gray-900">Our courses</h2>
 
         <div class="mt-8 grid grid-cols-1 gap-y-20" v-if="courses.length">
-          <article v-for="course, i in courses" :key="i" class="group relative">
+          <article v-for="course, idx in courses" :key="idx" class="group relative">
             <div
               class="flex justify-center align-middle min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
               <img v-if="course.placeholder" class="py-28 object-center" src="~/assets/placeholder.svg" alt="placeholder">
-              <img v-else :src="course.thumbnail_url" :alt="course.name" @load="course.placeholder = false"
+              <img v-show="!course.placeholder" :src="course.thumbnail_url" :alt="course.name" @load="$store.commit('showImage', course.id)"
                 class="h-full w-full object-cover object-center lg:h-full lg:w-full"/>
             </div>
             <div class="mt-4 flex justify-between">
@@ -60,16 +60,10 @@ export default {
     store.commit('setCourses', modifiedCourses)
     store.commit('setPage', params.page)
   },
-  methods: {
-    getImgUrl(image) {
-      try {
-        return require(`~/assets/${image}`);
-      } catch {
-        return null;
-      }
-    }
-  },
   computed: {
+    showAlert() {
+      alert('yee!');
+    },
     currentPage() {
       return this.$route.params.page
     },

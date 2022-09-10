@@ -8,6 +8,14 @@ export const state = () => ({
 })
 
 export const mutations = {
+  showImage(state, idx) {
+    let viewedCourses = [...state.viewedCourses];
+    const index = viewedCourses.findIndex(course => String(course.id) == String(idx));
+    if (index != -1) {
+      viewedCourses[index].placeholder = false;
+      state.viewedCourses = viewedCourses;
+    }
+  },
   setCourses(state, courses) {
     state.courses = courses;
   },
