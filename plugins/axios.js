@@ -6,19 +6,15 @@ export default function ({ $axios, store, $cookies, redirect }) {
     }
   });
 
-  $axios.onError(error => {
-    if (error.response.status === 401) {
-      store.commit('logout');
-    }
-    // if (error.response.status === 404) {
-    //   return redirect(404, '/error');
-    // }
-  });
-
-  // $axios.onRequestError(err => {
-  //   console.log(err);
-  //   if (err.request.status === 404) {
+  // $axios.onError(error => {
+  //   if (error.response.status === 404 || error.response.status === 403) {
   //     return redirect(404, '/error');
   //   }
-  // })
+  // });
+
+  $axios.onError(err => {
+    if (err.response.status == 403 || err.response.status == 404) {
+      return redirect('/error');
+    }
+  });
 }
