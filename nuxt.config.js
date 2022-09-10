@@ -1,11 +1,7 @@
 export default {
-  target: 'static',
-  router: {
-    base: '/simple-blog/'
-  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Blog',
+    title: 'Courses',
     htmlAttrs: {
       lang: 'en'
     },
