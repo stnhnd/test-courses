@@ -8,9 +8,8 @@
         <div class="relative">
           <div
             class="flex justify-center align-middle min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
-            <img :src="getImgUrl(course.thumbnail_url)" :alt="course.name" v-if="getImgUrl(course.thumbnail_url) != null"
-              class="h-full w-full object-cover object-center h-full w-full" />
-              <img v-else class="py-28 object-center" src="~/assets/placeholder.svg" alt="placeholder">
+            <img v-if="placeholder" class="py-28 object-center" src="~/assets/placeholder.svg" alt="placeholder">
+            <img :src="course.thumbnail_url" :alt="course.name" @load="placeholder = false" v-else class="h-full w-full object-cover object-center h-full w-full" />
           </div>
           <div class="mt-4 flex justify-between">
             <div>
@@ -34,14 +33,10 @@ export default {
       course: course.data
     }
   },
+  data: () => ({
+    placeholder: true
+  }),
   methods: {
-    getImgUrl(image) {
-      try {
-        return require(`~/assets/${image}`);
-      } catch {
-        return null;
-      }
-    },
     backToBlog() {
       if (process.client) {
         if (this.$nuxt.context.from === undefined) {

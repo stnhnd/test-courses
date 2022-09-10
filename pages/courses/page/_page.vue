@@ -8,9 +8,9 @@
           <article v-for="course, i in courses" :key="i" class="group relative">
             <div
               class="flex justify-center align-middle min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
-              <img :src="getImgUrl(course.thumbnail_url)" :alt="course.name"
-                class="h-full w-full object-cover object-center lg:h-full lg:w-full" v-if="getImgUrl(course.thumbnail_url) != null"/>
-                <img v-else class="py-28 object-center" src="~/assets/placeholder.svg" alt="placeholder">
+              <img v-if="course.placeholder" class="py-28 object-center" src="~/assets/placeholder.svg" alt="placeholder">
+              <img v-else :src="course.thumbnail_url" :alt="course.name" @load="course.placeholder = false"
+                class="h-full w-full object-cover object-center lg:h-full lg:w-full"/>
             </div>
             <div class="mt-4 flex justify-between">
               <div>
@@ -20,13 +20,12 @@
                     {{ course.name }}
                   </nuxt-link>
                 </h2>
-                <p>{{course.text | shortText}}</p>
               </div>
             </div>
           </article>
         </div>
 
-        <div v-else class="mt-10">No posts...</div>
+        <div v-else class="mt-10">No courses...</div>
 
         <div class="mt-10 flex items-center justify-center border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
           v-if="courses.length && pagination">
@@ -50,15 +49,16 @@
 export default {
   async asyncData({ $axios, store, params }) {
     const courses = await $axios.$get('/courses');
-    store.commit('setCourses', courses.data)
+    const modifiedCourses = courses.data.map(course => {
+      return {
+        id: course.id,
+        name: course.name,
+        thumbnail_url: course.thumbnail_url,
+        placeholder: true,
+      } 
+    })
+    store.commit('setCourses', modifiedCourses)
     store.commit('setPage', params.page)
-  },
-  filters: {
-    shortText(value) {
-      if (!value) return ''
-      value = value.toString();
-      return value.slice(0, 350) + '...';
-    }
   },
   methods: {
     getImgUrl(image) {
