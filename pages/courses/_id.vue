@@ -28,8 +28,11 @@
 
 <script>
 export default {
-  async asyncData({ $axios, params }) {
+  async asyncData({ $axios, params, redirect }) {
     const course = await $axios.$get(`/courses/${params.id}`);
+    if (!course.id) {
+      return redirect(404, '/error');
+    }
     return {
       course: course.data
     }
