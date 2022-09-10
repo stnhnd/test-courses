@@ -10,7 +10,7 @@
               class="flex justify-center align-middle min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
               <img :src="getImgUrl(course.thumbnail_url)" :alt="course.name"
                 class="h-full w-full object-cover object-center lg:h-full lg:w-full" v-if="getImgUrl(course.thumbnail_url) != null"/>
-                <img v-else class="py-28 object-center" src="~/assets/placeholder.svg" alt="placeholder"></img>
+                <img v-else class="py-28 object-center" src="~/assets/placeholder.svg" alt="placeholder">
             </div>
             <div class="mt-4 flex justify-between">
               <div>
