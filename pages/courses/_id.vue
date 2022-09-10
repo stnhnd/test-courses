@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  async asyncData({ $axios, params, redirect }) {
+  async asyncData({ $axios, params }) {
     const course = await $axios.$get(`/courses/${params.id}`);
     return {
       course: course.data
