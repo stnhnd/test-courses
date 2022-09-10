@@ -1,4 +1,4 @@
-export default function ({ $axios, store, $cookies }) {
+export default function ({ $axios, store, $cookies, redirect }) {
   $axios.onResponse(response => {
     if (response.data.api_token) {
       $axios.setHeader('Authorization', `Bearer ${response.data.api_token}`);
@@ -6,9 +6,9 @@ export default function ({ $axios, store, $cookies }) {
     }
   });
 
-  $axios.onError(error => {
-    if (error.response.status === 401) {
-      store.commit('logout');
+  $axios.onError(err => {
+    if (err.response.status == 403 || err.response.status == 404) {
+      return redirect('/error');
     }
   });
 }
